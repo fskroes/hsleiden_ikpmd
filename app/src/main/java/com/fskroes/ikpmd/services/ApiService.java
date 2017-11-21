@@ -14,8 +14,8 @@ public interface ApiService {
     Observable<List<CurrencyDTO>> getListOfCurrenciesConfigurable();
 
     @GET("ticker/{id}")
-    Call<CurrencyDTO> getSingleCurrencyConfigurable(@Path("id") int id);
+    Observable<CurrencyDTO> getSingleCurrencyConfigurable(@Path("id") int id);
 
     @GET("ticker/{id}/?convert={currencyConverter}")
-    Call<CurrencyDTO> getSingleCurrencyConfigurable(@Path("currencyConverter") String preferredBaseCurrency);
+    Observable<CurrencyDTO> getSingleCurrencyConfigurable(@Path("currencyConverter") String preferredBaseCurrency);
 }
