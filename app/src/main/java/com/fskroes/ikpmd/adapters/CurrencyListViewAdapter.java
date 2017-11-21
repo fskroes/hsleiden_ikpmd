@@ -8,11 +8,12 @@ import android.widget.TextView;
 
 import com.fskroes.ikpmd.R;
 import com.fskroes.ikpmd.dto.CurrencyDTO;
+import com.fskroes.ikpmd.models.CurrencyViewModel;
 
 import java.util.List;
 
 public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListViewAdapter.ViewHolder> {
-    private List<CurrencyDTO> values;
+    private List<CurrencyViewModel> values;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -26,15 +27,10 @@ public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListVi
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            txtHeader = (TextView) v.findViewById(R.id.firstLine);
-            txtFooter = (TextView) v.findViewById(R.id.secondLine);
+            txtHeader = (TextView) v.findViewById(R.id.currencyName);
+            txtFooter = (TextView) v.findViewById(R.id.currencyRank);
         }
     }
-
-//    public void add(int position, String item) {
-//        values.add(position, item);
-//        notifyItemInserted(position);
-//    }
 
     public void remove(int position) {
         values.remove(position);
@@ -42,7 +38,7 @@ public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListVi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CurrencyListViewAdapter(List<CurrencyDTO> myDataset) {
+    public CurrencyListViewAdapter(List<CurrencyViewModel> myDataset) {
         values = myDataset;
     }
 
@@ -63,7 +59,7 @@ public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListVi
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String name = values.get(position).getName();
+        final String name = values.get(position).getCurrentName();
         holder.txtHeader.setText(name);
         holder.txtHeader.setOnClickListener(v -> remove(position));
 
