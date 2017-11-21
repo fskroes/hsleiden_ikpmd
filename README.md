@@ -1,4 +1,4 @@
-# hsleiden_ikpmd
+# hsleiden_ikpmd - coinmarketcap Android application
 school project for Android development, made in Android Studio 3.0.
 This application will read the API from coinmarketcap.com, gets all the cryptocurrencies and display them in a view.
 
