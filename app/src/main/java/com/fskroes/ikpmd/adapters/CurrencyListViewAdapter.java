@@ -20,34 +20,30 @@ public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListVi
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView txtHeader;
-        public TextView txtFooter;
+        public TextView nameTextView;
+        public TextView rankTextView;
+        public TextView usdTextView;
         public View layout;
 
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            txtHeader = (TextView) v.findViewById(R.id.currencyName);
-            txtFooter = (TextView) v.findViewById(R.id.currencyRank);
+            nameTextView = v.findViewById(R.id.currencyName);
+            rankTextView = v.findViewById(R.id.currencyRank);
+            usdTextView = v.findViewById(R.id.currencyUSD);
         }
     }
 
-    public void remove(int position) {
-        values.remove(position);
-        notifyItemRemoved(position);
-    }
-
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CurrencyListViewAdapter(List<CurrencyViewModel> myDataset) {
-        values = myDataset;
+    public CurrencyListViewAdapter(List<CurrencyViewModel> models) {
+        values = models;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public CurrencyListViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        LayoutInflater inflater = LayoutInflater.from(
-                parent.getContext());
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.row_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
@@ -60,10 +56,9 @@ public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListVi
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final String name = values.get(position).getCurrentName();
-        holder.txtHeader.setText(name);
-        holder.txtHeader.setOnClickListener(v -> remove(position));
-
-        holder.txtFooter.setText("Footer: " + name);
+        holder.nameTextView.setText(name);
+        holder.rankTextView.setText(values.get(position).getCurrencyRank());
+        holder.usdTextView.setText("USD : " + values.get(position).get_currencyUSD());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

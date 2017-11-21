@@ -1,6 +1,7 @@
 package com.fskroes.ikpmd;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,16 +29,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
     private CompositeDisposable compositeDisposable;
 
-//    @BindView(R.id.my_recycler_view) recyclerView;
+    @BindView(R.id.my_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         compositeDisposable = new CompositeDisposable();
         initRecyclerView();
@@ -60,13 +67,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            initJsonReponse();
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     private void handleError(Throwable throwable) {
+        if (swipeRefreshLayout.isEnabled()) swipeRefreshLayout.setEnabled(false);
         System.out.println("error: " + throwable.getMessage());
     }
 
