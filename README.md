@@ -1,5 +1,6 @@
 # hsleiden_ikpmd
-school project for Android development, made in Android Studio 3.0. 
+school project for Android development, made in Android Studio 3.0.
+This application will read the API from coinmarketcap.com, gets all the cryptocurrencies and display them in a view.
 
 Libraries used in this project:
 - Retrofit : http://square.github.io/retrofit/
