@@ -4,35 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.fskroes.ikpmd.R;
-import com.fskroes.ikpmd.dto.CurrencyDTO;
 import com.fskroes.ikpmd.models.CurrencyViewModel;
 
 import java.util.List;
 
-public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListViewAdapter.ViewHolder> {
+public class CurrencyListViewAdapter extends RecyclerView.Adapter<RecycleViewHolder> {
     private List<CurrencyViewModel> values;
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView nameTextView;
-        public TextView rankTextView;
-        public TextView usdTextView;
-        public View layout;
-
-        public ViewHolder(View v) {
-            super(v);
-            layout = v;
-            nameTextView = v.findViewById(R.id.currencyName);
-            rankTextView = v.findViewById(R.id.currencyRank);
-            usdTextView = v.findViewById(R.id.currencyUSD);
-        }
-    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public CurrencyListViewAdapter(List<CurrencyViewModel> models) {
@@ -41,18 +20,18 @@ public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListVi
 
     // Create new views (invoked by the layout manager)
     @Override
-    public CurrencyListViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.row_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
+        RecycleViewHolder vh = new RecycleViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecycleViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final String name = values.get(position).getCurrentName();

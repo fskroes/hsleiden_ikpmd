@@ -1,28 +1,33 @@
 package com.fskroes.ikpmd;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.RelativeLayout;
 
 import com.fskroes.ikpmd.adapters.CurrencyListViewAdapter;
 import com.fskroes.ikpmd.dto.CurrencyDTO;
 import com.fskroes.ikpmd.models.CurrencyViewModel;
 import com.fskroes.ikpmd.services.ApiService;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.nytimes.android.external.store3.base.impl.BarCode;
+import com.nytimes.android.external.store3.base.impl.MemoryPolicy;
+import com.nytimes.android.external.store3.base.impl.Store;
+import com.nytimes.android.external.store3.base.impl.StoreBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -31,18 +36,30 @@ public class MainActivity extends AppCompatActivity {
 
     private CompositeDisposable compositeDisposable;
 
+    @BindView(R.id.relativeLayout)
+    RelativeLayout relativeLayout;
     @BindView(R.id.my_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerView.Adapter adapter;
+    private DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+//        initFireBaseSettings();
+
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        databaseReference = FirebaseDatabase.getInstance().getReference("list");
+
+
 
         compositeDisposable = new CompositeDisposable();
         initRecyclerView();
@@ -56,6 +73,22 @@ public class MainActivity extends AppCompatActivity {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(ApiService.class);
+
+
+//        Store<CurrencyDTO, BarCode> p = StoreBuilder
+//                .<CurrencyDTO>barcode()
+//                .fetcher(barCode -> apiService.getListOfCurrenciesConfigurable())
+//                .memoryPolicy(
+//                        MemoryPolicy
+//                                .builder()
+//                                .setExpireAfter(10)
+//                                .setExpireAfterTimeUnit(TimeUnit.SECONDS)
+//                                .build()
+//                )
+//                .open();
+
+
+
 
         apiService.getListOfCurrenciesConfigurable()
                 .flatMapIterable(list -> list)
@@ -80,10 +113,20 @@ public class MainActivity extends AppCompatActivity {
     private void handleError(Throwable throwable) {
         if (swipeRefreshLayout.isEnabled()) swipeRefreshLayout.setEnabled(false);
         System.out.println("error: " + throwable.getMessage());
+        Snackbar
+                .make(
+                    relativeLayout,
+                    "Sorry, something went wrong, please contact support if this persist",
+                    Snackbar.LENGTH_LONG)
+                .show();
     }
 
     private void handleResponse(List<CurrencyViewModel> currencyViewModels) {
         List<CurrencyViewModel> list = new ArrayList<>(currencyViewModels);
+
+        databaseReference.keepSynced(true);
+        databaseReference.setValue(list);
+
         adapter = new CurrencyListViewAdapter(list);
         recyclerView.setAdapter(adapter);
     }

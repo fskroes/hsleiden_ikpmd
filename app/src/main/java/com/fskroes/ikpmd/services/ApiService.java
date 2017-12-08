@@ -5,7 +5,7 @@ import com.fskroes.ikpmd.dto.CurrencyDTO;
 import java.util.List;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
