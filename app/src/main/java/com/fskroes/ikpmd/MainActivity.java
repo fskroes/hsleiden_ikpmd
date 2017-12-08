@@ -9,20 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.RelativeLayout;
 
 import com.fskroes.ikpmd.adapters.CurrencyListViewAdapter;
-import com.fskroes.ikpmd.dto.CurrencyDTO;
 import com.fskroes.ikpmd.models.CurrencyViewModel;
 import com.fskroes.ikpmd.services.ApiService;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.nytimes.android.external.store3.base.impl.BarCode;
-import com.nytimes.android.external.store3.base.impl.MemoryPolicy;
-import com.nytimes.android.external.store3.base.impl.Store;
-import com.nytimes.android.external.store3.base.impl.StoreBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,13 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-//        initFireBaseSettings();
-
-
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         databaseReference = FirebaseDatabase.getInstance().getReference("list");
-
-
 
         compositeDisposable = new CompositeDisposable();
         initRecyclerView();
@@ -73,21 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(ApiService.class);
-
-
-//        Store<CurrencyDTO, BarCode> p = StoreBuilder
-//                .<CurrencyDTO>barcode()
-//                .fetcher(barCode -> apiService.getListOfCurrenciesConfigurable())
-//                .memoryPolicy(
-//                        MemoryPolicy
-//                                .builder()
-//                                .setExpireAfter(10)
-//                                .setExpireAfterTimeUnit(TimeUnit.SECONDS)
-//                                .build()
-//                )
-//                .open();
-
-
 
 
         apiService.getListOfCurrenciesConfigurable()
