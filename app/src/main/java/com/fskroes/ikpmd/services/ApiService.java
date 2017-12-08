@@ -5,7 +5,7 @@ import com.fskroes.ikpmd.dto.CurrencyDTO;
 import java.util.List;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -14,8 +14,8 @@ public interface ApiService {
     Observable<List<CurrencyDTO>> getListOfCurrenciesConfigurable();
 
     @GET("ticker/{id}")
-    Call<CurrencyDTO> getSingleCurrencyConfigurable(@Path("id") int id);
+    Observable<CurrencyDTO> getSingleCurrencyConfigurable(@Path("id") int id);
 
     @GET("ticker/{id}/?convert={currencyConverter}")
-    Call<CurrencyDTO> getSingleCurrencyConfigurable(@Path("currencyConverter") String preferredBaseCurrency);
+    Observable<CurrencyDTO> getSingleCurrencyConfigurable(@Path("currencyConverter") String preferredBaseCurrency);
 }

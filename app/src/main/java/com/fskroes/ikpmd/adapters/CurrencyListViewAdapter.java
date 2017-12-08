@@ -4,73 +4,58 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.fskroes.ikpmd.R;
 import com.fskroes.ikpmd.dto.CurrencyDTO;
+import com.fskroes.ikpmd.models.CurrencyViewModel;
 
 import java.util.List;
 
-public class CurrencyListViewAdapter extends RecyclerView.Adapter<CurrencyListViewAdapter.ViewHolder> {
-    private List<CurrencyDTO> values;
+import io.reactivex.subjects.PublishSubject;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView txtHeader;
-        public TextView txtFooter;
-        public View layout;
+public class CurrencyListViewAdapter extends RecyclerView.Adapter<RecycleViewHolder> {
 
-        public ViewHolder(View v) {
-            super(v);
-            layout = v;
-            txtHeader = (TextView) v.findViewById(R.id.firstLine);
-            txtFooter = (TextView) v.findViewById(R.id.secondLine);
-        }
-    }
-
-//    public void add(int position, String item) {
-//        values.add(position, item);
-//        notifyItemInserted(position);
-//    }
-
-    public void remove(int position) {
-        values.remove(position);
-        notifyItemRemoved(position);
-    }
+    private final PublishSubject<CurrencyViewModel> onClickSubject = PublishSubject.create();
+    private List<CurrencyViewModel> values;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CurrencyListViewAdapter(List<CurrencyDTO> myDataset) {
-        values = myDataset;
+    public CurrencyListViewAdapter(List<CurrencyViewModel> models) {
+        values = models;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public CurrencyListViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        LayoutInflater inflater = LayoutInflater.from(
-                parent.getContext());
-        View v = inflater.inflate(R.layout.row_item, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View v = inflater.inflate(R.layout.row_item_card, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
+        RecycleViewHolder vh = new RecycleViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecycleViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String name = values.get(position).getName();
-        holder.txtHeader.setText(name);
-        holder.txtHeader.setOnClickListener(v -> remove(position));
+        final String name = values.get(position).getCurrentName();
+        holder.nameTextView.setText(name);
+        holder.rankTextView.setText(values.get(position).getCurrencyRank());
+        holder.usdTextView.setText("USD : " + values.get(position).get_currencyUSD());
 
-        holder.txtFooter.setText("Footer: " + name);
+        CurrencyViewModel element = values.get(holder.getLayoutPosition());
+
+        holder.layout.setOnClickListener(view -> {
+            onClickSubject.onNext(element);
+            System.out.println(element.getCurrentName());
+        });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    public PublishSubject<CurrencyViewModel> getOnClickSubject() {
+        return onClickSubject;
+    }
+
     @Override
     public int getItemCount() {
         return values.size();
