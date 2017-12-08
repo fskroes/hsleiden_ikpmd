@@ -18,6 +18,6 @@ public class RecycleViewHolder extends RecyclerView.ViewHolder {
         layout = itemView;
         nameTextView = itemView.findViewById(R.id.currencyName);
         rankTextView = itemView.findViewById(R.id.currencyRank);
-        usdTextView = itemView.findViewById(R.id.currencyUSD);
+        usdTextView = itemView.findViewById(R.id.currencyValue);
     }
 }
