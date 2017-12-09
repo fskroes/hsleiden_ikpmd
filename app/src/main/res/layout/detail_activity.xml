@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/currencyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Currency: " />
+
+        <TextView
+            android:id="@+id/currencyUSD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USD: " />
+
+        <TextView
+            android:id="@+id/currencyBTC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BTC: " />
+
+        <TextView
+            android:id="@+id/currencyMarketCap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MarketCap:" />
+
+        <TextView
+            android:id="@+id/currencyRank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rank:" />
+
+        <TextView
+            android:id="@+id/currencyPercentageChange1h"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1h: " />
+
+        <TextView
+            android:id="@+id/currencyPercentageChange24h"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="24h: " />
+
+        <TextView
+            android:id="@+id/currencyPercentageChange7d"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="7d: " />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
