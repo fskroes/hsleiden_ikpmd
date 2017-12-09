@@ -1,13 +1,15 @@
 package com.fskroes.ikpmd.adapters;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fskroes.ikpmd.DetailActivity;
 import com.fskroes.ikpmd.R;
-import com.fskroes.ikpmd.dto.CurrencyDTO;
 import com.fskroes.ikpmd.models.CurrencyViewModel;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -42,13 +44,17 @@ public class CurrencyListViewAdapter extends RecyclerView.Adapter<RecycleViewHol
         final String name = values.get(position).getCurrentName();
         holder.nameTextView.setText(name);
         holder.rankTextView.setText(values.get(position).getCurrencyRank());
-        holder.usdTextView.setText("USD : " + values.get(position).get_currencyUSD());
+        holder.usdTextView.setText("USD : " + values.get(position).getCurrencyUSD());
 
         CurrencyViewModel element = values.get(holder.getLayoutPosition());
 
         holder.layout.setOnClickListener(view -> {
             onClickSubject.onNext(element);
-            System.out.println(element.getCurrentName());
+
+            Intent intent = new Intent(holder.layout.getContext(), DetailActivity.class);
+            String jsonelement = new Gson().toJson(element);
+            intent.putExtra("element", jsonelement);
+            holder.layout.getContext().startActivity(intent);
         });
     }
 

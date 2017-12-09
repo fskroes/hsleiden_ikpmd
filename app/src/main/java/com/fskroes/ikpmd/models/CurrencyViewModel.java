@@ -22,9 +22,26 @@ public class CurrencyViewModel {
     }
 
     private final String _currencyUSD;
-    public String get_currencyUSD() {
+    public String getCurrencyUSD() {
         return _currencyUSD;
     }
+
+    private final String _currencyBTCValue;
+    public String getCurrencyBTCValue() {
+        return _currencyBTCValue;
+    }
+
+    private final String _currencyMarketCap;
+    public String getCurrencyMarketCap() { return _currencyMarketCap; }
+
+    private final String _currencyPercentageChange1h;
+    public String getCurrencyPercentageChange1h() { return _currencyPercentageChange1h; }
+
+    private final String _currencyPercentageChange24h;
+    public String getCurrencyPercentageChange24h() { return _currencyPercentageChange24h; }
+
+    private final String _currencyPercentageChange7d;
+    public String getCurrencyPercentageChange7d() { return _currencyPercentageChange7d; }
 
     public CurrencyViewModel(CurrencyDTO currencyDTO) {
         this._currencyDTO = currencyDTO;
@@ -33,6 +50,11 @@ public class CurrencyViewModel {
         _currencyName = _currencyDTO.getName();
         _currencyRank = _currencyDTO.getRank();
         _currencyUSD = _currencyDTO.getPriceUsd();
+        _currencyBTCValue = currencyDTO.getPriceBtc();
+        _currencyMarketCap = currencyDTO.getMarketCapUsd();
+        _currencyPercentageChange1h = currencyDTO.getPercentChange1h();
+        _currencyPercentageChange24h = currencyDTO.getPercentChange24h();
+        _currencyPercentageChange7d = currencyDTO.getPercentChange7d();
     }
 
 
