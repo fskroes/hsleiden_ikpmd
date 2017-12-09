@@ -1,5 +1,6 @@
 package com.fskroes.ikpmd;
 
+ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,13 +14,17 @@ import com.fskroes.ikpmd.models.CurrencyViewModel;
 import com.fskroes.ikpmd.services.ApiService;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -38,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerView.Adapter adapter;
-    private DatabaseReference databaseReference;
+    private StorageReference databaseReference;
 
+    Observable observable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference("list");
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        databaseReference = FirebaseStorage.getInstance().getReference("list");
 
         compositeDisposable = new CompositeDisposable();
         initRecyclerView();
@@ -98,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
     private void handleResponse(List<CurrencyViewModel> currencyViewModels) {
         List<CurrencyViewModel> list = new ArrayList<>(currencyViewModels);
 
-        databaseReference.keepSynced(true);
-        databaseReference.setValue(list);
+//        databaseReference.putStream(true);
+//        databaseReference.putStream((InputStream) list);
 
         adapter = new CurrencyListViewAdapter(list);
         recyclerView.setAdapter(adapter);
